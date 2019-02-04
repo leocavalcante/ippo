@@ -9,7 +9,7 @@ class IppoTest extends TestCase
 {
     public function testGenerate()
     {
-        $ippo = Ippo::fromYaml(__DIR__.'/fixture.yaml');
+        $ippo = Ippo::fromYaml(__DIR__.'/fixture.yml');
         $definitions = $ippo->generate();
 
         foreach ($definitions as $definition) {
