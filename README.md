@@ -2,7 +2,7 @@
 
 - Immutable - *Uses `with`s instead of setters*
 - Auto-generated - *From a YAML definition*
-- Cloneable
-- Serializable - *TO JSON, to Array and to String*
+- Cloneable - *No reference sharing*
+- Serializable - *To JSON, to Array and to String*
 
 Plain-old PHP Objects
