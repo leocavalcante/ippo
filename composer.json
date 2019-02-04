@@ -1,0 +1,30 @@
+{
+    "name": "leocavalcante/ippo",
+    "description": "Immutable Plain-old PHP Objects",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "license": "BSD-3",
+    "authors": [
+        {
+            "name": "leocavalcante",
+            "email": "lc@leocavalcante.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "twig/twig": "^2.6",
+        "symfony/yaml": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "LeoCavalcante\\Ippo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LeoCavalcante\\Test\\Ippo\\": "tests/"
+        }
+    }
+}
