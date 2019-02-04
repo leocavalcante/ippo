@@ -1,7 +1,7 @@
 namespace: Acme
 
 definitions:
-  - User:
+  - TestUser:
     id: int
     name: string
     isAdmin: [bool, 'false']

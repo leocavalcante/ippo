@@ -1,3 +1,5 @@
 *.cache
 composer.phar
 vendor/
+tests/generated/TestUser.php
+phpunit.xml

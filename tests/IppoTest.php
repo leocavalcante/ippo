@@ -16,14 +16,14 @@ class IppoTest extends TestCase
             file_put_contents(__DIR__."/generated/{$definition[0]}.php", $definition[1]);
         }
 
-        $this->assertFileExists(__DIR__."/generated/User.php");
+        $this->assertFileExists(__DIR__."/generated/TestUser.php");
 
-        require_once __DIR__."/generated/User.php";
+        require_once __DIR__."/generated/TestUser.php";
 
-        $this->assertTrue(class_exists('\Acme\User'));
+        $this->assertTrue(class_exists('\Acme\TestUser'));
 
         $dt = new \DateTime();
-        $user = new \Acme\User(1, 'username', false, $dt);
+        $user = new \Acme\TestUser(1, 'username', false, $dt);
 
         $this->assertTrue(method_exists($user, 'getId'));
         $this->assertTrue(method_exists($user, 'withId'));
@@ -48,7 +48,7 @@ class IppoTest extends TestCase
         $this->assertSame(false, $user2->getIsAdmin());
         $this->assertSame($dt, $user2->getBirthDate());
 
-        $this->assertStringStartsWith("User(\n\tid => 1;\n\tname => \"username\"", (string) $user);
+        $this->assertStringStartsWith("TestUser(\n\tid => 1;\n\tname => \"username\"", (string) $user);
 
         $userArr = $user->toArray();
 
