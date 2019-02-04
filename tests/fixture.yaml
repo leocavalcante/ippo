@@ -4,5 +4,5 @@ definitions:
   - User:
     id: int
     name: string
-    isAdmin: bool
-    birthDate: \DateTime
+    isAdmin: [bool, 'false']
+    birthDate: [?\DateTime, 'null']

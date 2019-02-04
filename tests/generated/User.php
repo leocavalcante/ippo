@@ -12,8 +12,8 @@ class User implements \JsonSerializable
     public function __construct(
         int $id,
         string $name,
-        bool $isAdmin,
-        \DateTime $birthDate
+        bool $isAdmin = false,
+        ?\DateTime $birthDate = null
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -66,12 +66,12 @@ class User implements \JsonSerializable
         );
     }
 
-    public function getBirthDate(): \DateTime
+    public function getBirthDate(): ?\DateTime
     {
         return $this->birthDate;
     }
 
-    public function withBirthDate(\DateTime $birthDate): User
+    public function withBirthDate(?\DateTime $birthDate): User
     {
         return new User(
             $this->id,

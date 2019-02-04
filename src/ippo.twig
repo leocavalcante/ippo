@@ -4,31 +4,31 @@ namespace {{namespace}};
 
 class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endif %} implements \JsonSerializable
 {
-{% for attrName, attrType in attributes %}
+{% for attrName, attr in attributes %}
     private ${{attrName}};
 {% endfor %}
 
     public function __construct(
-{% for attrName, attrType in attributes %}
-        {{attrType}} ${{attrName}}{% if not loop.last %},{% endif %}
+{% for attrName, attr in attributes %}
+        {{attr.type}} ${{attrName}}{% if attr.default is not empty %} = {{attr.default}}{% endif %}{% if not loop.last %},{% endif %}
 
 {% endfor %}
     ) {
-{% for attrName, attrType in attributes %}
+{% for attrName, attr in attributes %}
         $this->{{attrName}} = ${{attrName}};
 {% endfor %}
     }
 
-{% for attrName, attrType in attributes %}
-    public function get{{attrName|ucfirst}}(): {{attrType}}
+{% for attrName, attr in attributes %}
+    public function get{{attrName|ucfirst}}(): {{attr.type}}
     {
         return $this->{{attrName}};
     }
 
-    public function with{{attrName|ucfirst}}({{attrType}} ${{attrName}}): {{className}}
+    public function with{{attrName|ucfirst}}({{attr.type}} ${{attrName}}): {{className}}
     {
         return new {{className}}(
-{% for _attrName, _attrType in attributes %}
+{% for _attrName, _attr in attributes %}
 {% if _attrName == attrName %}
             ${{_attrName}}{% if not loop.last %},{% endif %}
 
@@ -44,7 +44,7 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
     public function toArray(): array
     {
         return [
-{% for attrName, attrType in attributes %}
+{% for attrName, attr in attributes %}
             '{{attrName|snake_case}}' => $this->{{attrName}},
 {% endfor %}
         ];
@@ -58,7 +58,7 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
     public function __clone()
     {
         return new {{className}}(
-{% for attrName, attrType in attributes %}
+{% for attrName, attr in attributes %}
             $this->{{attrName}}{% if not loop.last %},{% endif %}
 
 {% endfor %}
@@ -67,10 +67,10 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
 
     public function __toString()
     {
-{% for attrName, attrType in attributes %}
+{% for attrName, attr in attributes %}
         ${{attrName}} = json_encode($this->{{attrName}});
 {% endfor %}
 
-        return "{{className}}(\n{% for attrName, attrType in attributes %}\t{{attrName}} => {${{attrName}}};\n{% endfor %})";
+        return "{{className}}(\n{% for attrName, attr in attributes %}\t{{attrName}} => {${{attrName}}};\n{% endfor %})";
     }
 }

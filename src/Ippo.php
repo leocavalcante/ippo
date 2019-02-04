@@ -36,7 +36,15 @@ class Ippo
 
             $className = $keys[0];
             $extendsClassName = $vals[0];
+
             $attributes = array_combine(array_slice($keys, 1), array_slice($vals, 1));
+            $attributes = array_map(function ($attr): array {
+                if (is_array($attr)) {
+                    return ['type' => $attr[0], 'default' => $attr[1]];
+                }
+
+                return ['type' => $attr];
+            }, $attributes);
 
             $contents = $this->twig->render('ippo.twig', compact('className', 'extendsClassName', 'namespace', 'attributes'));
 
