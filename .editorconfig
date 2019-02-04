@@ -8,8 +8,8 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 end_of_line = lf
 
-[{*.php,*.twig}]
+[*.{php,twig}]
 indent_size = 4
 
-[composer.json]
+[{composer.json,ippo}]
 indent_size = 4

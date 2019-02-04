@@ -1,0 +1,9 @@
+namespace: App
+
+definitions:
+  - User:
+    id: int
+    name: string
+    email: string
+    isAdmin: [bool, 'false']
+    birthDate: [?\DateTime, 'null']

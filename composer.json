@@ -26,5 +26,9 @@
         "psr-4": {
             "LeoCavalcante\\Test\\Ippo\\": "tests/"
         }
-    }
+    },
+    "bin": [
+        "bin/ippo",
+        "bin/ippo.bat"
+    ]
 }

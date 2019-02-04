@@ -1,0 +1,31 @@
+#!/bin/php
+<?php declare(strict_types=1);
+
+if (file_exists(__DIR__.'/vendor/autoload.php')) {
+    require_once __DIR__.'/vendor/autoload.php';
+}
+
+if (file_exists(__DIR__.'/../../autoload.php')) {
+    require_once __DIR__.'/../../autoload.php';
+}
+
+if (empty($argv[1])) {
+    echo "Please, provide a YAML config file.", PHP_EOL;
+    exit(1);
+}
+
+if (empty($argv[2])) {
+    echo "Please, provide a output directory", PHP_EOL;
+    exit(1);
+}
+
+use LeoCavalcante\Ippo\Ippo;
+
+$ippo = Ippo::fromYaml($argv[1]);
+$definitions = $ippo->generate();
+
+foreach ($definitions as $definition) {
+    $className = $definition[0];
+    file_put_contents("{$argv[2]}/$className.php", $definition[1]);
+    echo "$className created", PHP_EOL;
+}
