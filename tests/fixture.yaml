@@ -1,0 +1,8 @@
+namespace: Acme
+
+definitions:
+  - User:
+    id: int
+    name: string
+    isAdmin: bool
+    birthDate: \DateTime

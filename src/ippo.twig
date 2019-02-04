@@ -1,0 +1,76 @@
+<?php declare(strict_types=1);
+
+namespace {{namespace}};
+
+class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endif %} implements \JsonSerializable
+{
+{% for attrName, attrType in attributes %}
+    private ${{attrName}};
+{% endfor %}
+
+    public function __construct(
+{% for attrName, attrType in attributes %}
+        {{attrType}} ${{attrName}}{% if not loop.last %},{% endif %}
+
+{% endfor %}
+    ) {
+{% for attrName, attrType in attributes %}
+        $this->{{attrName}} = ${{attrName}};
+{% endfor %}
+    }
+
+{% for attrName, attrType in attributes %}
+    public function get{{attrName|ucfirst}}(): {{attrType}}
+    {
+        return $this->{{attrName}};
+    }
+
+    public function with{{attrName|ucfirst}}({{attrType}} ${{attrName}}): {{className}}
+    {
+        return new {{className}}(
+{% for _attrName, _attrType in attributes %}
+{% if _attrName == attrName %}
+            ${{_attrName}}{% if not loop.last %},{% endif %}
+
+{% else %}
+            $this->{{_attrName}}{% if not loop.last %},{% endif %}
+
+{% endif %}
+{% endfor %}
+        );
+    }
+
+{% endfor %}
+    public function toArray(): array
+    {
+        return [
+{% for attrName, attrType in attributes %}
+            '{{attrName|snake_case}}' => $this->{{attrName}},
+{% endfor %}
+        ];
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    public function __clone()
+    {
+        return new {{className}}(
+{% for attrName, attrType in attributes %}
+            $this->{{attrName}}{% if not loop.last %},{% endif %}
+
+{% endfor %}
+        );
+    }
+
+    public function __toString()
+    {
+{% for attrName, attrType in attributes %}
+        ${{attrName}} = json_encode($this->{{attrName}});
+{% endfor %}
+
+        return "{{className}}(\n{% for attrName, attrType in attributes %}\t{{attrName}} => {${{attrName}}};\n{% endfor %})";
+    }
+}
