@@ -7,6 +7,8 @@
 
 ― Auto-generated Plain-old PHP Objects.
 
+#### 🛡️ Both lib's source code and it's generated code are verifiable by [Phan](https://github.com/phan/phan) on its strictest level. 
+
 ## Usage
 
 A definition file looks like:
