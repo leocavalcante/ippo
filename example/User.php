@@ -7,12 +7,27 @@ class User implements \JsonSerializable
     static public function fromArray(array $source): User
     {
         return new User(
-            $source['id'] ?? null,
-            $source['name'] ?? null,
-            $source['email'] ?? null,
+            $source['id'],
+            $source['name'],
+            $source['email'],
             $source['is_admin'] ?? false,
             $source['birth_date'] ?? null,
         );
+    }
+
+    static public function fromJson(string $json): User
+    {
+        $source = json_decode($json, true);
+
+        if (false === $source) {
+            throw new \InvalidArgumentException('JSON decode error: '.json_last_error_msg());
+        }
+
+        if (!is_array($source)) {
+            throw new \InvalidArgumentException('Your JSON didnt decoded to an array');
+        }
+
+        return User::fromArray($source);
     }
 
     private $id;
@@ -144,12 +159,10 @@ class User implements \JsonSerializable
 
     public function __clone()
     {
-        return new User(
-            $this->id,
-            $this->name,
-            $this->email,
-            $this->isAdmin,
-            $this->birthDate
-        );
+        $this->id = $this->id;
+        $this->name = $this->name;
+        $this->email = $this->email;
+        $this->isAdmin = $this->isAdmin;
+        $this->birthDate = clone $this->birthDate;
     }
 }

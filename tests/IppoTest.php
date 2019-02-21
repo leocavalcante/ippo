@@ -55,7 +55,7 @@ class IppoTest extends TestCase
         $this->assertSame(1, $user2->getId());
         $this->assertSame('username', $user2->getName());
         $this->assertSame(false, $user2->getIsAdmin());
-        $this->assertSame($dt, $user2->getBirthDate());
+        $this->assertEquals($dt, $user2->getBirthDate());
 
         $this->assertStringStartsWith("TestUser(\n\tid => 1;\n\tname => \"username\"", $user->toString());
 
@@ -70,7 +70,10 @@ class IppoTest extends TestCase
         ], $userArr);
 
         $userJson = json_encode($user);
-        $this->assertStringStartsWith('{"id":1,"name":"username","is_admin":false,"birth_date":{"date":"', $userJson);
+
+        if (false !== $userJson) {
+            $this->assertStringStartsWith('{"id":1,"name":"username","is_admin":false,"birth_date":{"date":"', $userJson);
+        }
     }
 
     public function testFromArray()

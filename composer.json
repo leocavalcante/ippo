@@ -3,7 +3,8 @@
     "description": "Immutable Plain-old PHP Objects",
     "type": "library",
     "require-dev": {
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.0",
+        "phan/phan": "^1.2"
     },
     "license": "BSD-3-Clause",
     "authors": [
@@ -30,5 +31,15 @@
     "bin": [
         "bin/ippo",
         "bin/ippo.bat"
-    ]
+    ],
+    "scripts": {
+        "ippo": "@php ippo example/definitions.yml example/",
+        "test": "phpunit",
+        "phan": "phan",
+        "all": [
+            "@composer ippo",
+            "@composer test",
+            "@composer phan"
+        ]
+    }
 }

@@ -11,7 +11,13 @@ class Ippo
 
     static public function fromYaml(string $filename)
     {
-        return new Ippo(Yaml::parse(file_get_contents($filename)));
+        $contents = file_get_contents($filename);
+
+        if (false === $contents) {
+            throw new \InvalidArgumentException('Could not load YAML file: '.$filename);
+        }
+
+        return new Ippo(Yaml::parse($contents));
     }
 
     public function __construct(array $config)
@@ -23,6 +29,17 @@ class Ippo
 
         $this->twig->addFilter(new \Twig_Filter('snake_case', function (string $input): string {
             return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $input));
+        }));
+
+        $this->twig->addFunction(new \Twig_SimpleFunction('is_object', function (string $type): bool {
+            return !in_array($type, [
+                'boolean', 'bool',
+                'integer', 'int',
+                'float', 'double',
+                'string',
+                'array',
+                'callable',
+            ]);
         }));
     }
 
@@ -46,7 +63,14 @@ class Ippo
                 return ['type' => $attr];
             }, $attributes);
 
-            $contents = $this->twig->render('template.twig', compact('className', 'extendsClassName', 'namespace', 'attributes'));
+            $opts = [
+                'className' => $className,
+                'extendsClassName' => $extendsClassName,
+                'namespace' => $namespace,
+                'attributes' => $attributes,
+            ];
+
+            $contents = $this->twig->render('template.twig', $opts);
 
             return [$className, $contents];
         }, $this->config['definitions']);

@@ -8,7 +8,7 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
     {
         return new {{className}}(
 {% for attrName, attr in attributes %}
-            $source['{{attrName|snake_case}}'] ?? {% if attr.default is not empty %}{{attr.default}}{% else %}null{% endif  %},
+            $source['{{attrName|snake_case}}']{% if attr.default is not empty %} ?? {{attr.default}}{% endif  %},
 {% endfor %}
         );
     }
@@ -90,11 +90,8 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
 
     public function __clone()
     {
-        return new {{className}}(
 {% for attrName, attr in attributes %}
-            $this->{{attrName}}{% if not loop.last %},{% endif %}
-
+        $this->{{attrName}} = {% if is_object(attr.type) %}clone {% endif %}$this->{{attrName}};
 {% endfor %}
-        );
     }
 }
