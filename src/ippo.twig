@@ -65,7 +65,7 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
         );
     }
 
-    public function __toString()
+    public function toString()
     {
 {% for attrName, attr in attributes %}
         ${{attrName}} = json_encode($this->{{attrName}});

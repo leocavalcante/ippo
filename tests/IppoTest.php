@@ -48,7 +48,7 @@ class IppoTest extends TestCase
         $this->assertSame(false, $user2->getIsAdmin());
         $this->assertSame($dt, $user2->getBirthDate());
 
-        $this->assertStringStartsWith("TestUser(\n\tid => 1;\n\tname => \"username\"", (string) $user);
+        $this->assertStringStartsWith("TestUser(\n\tid => 1;\n\tname => \"username\"", $user->toString());
 
         $userArr = $user->toArray();
 
