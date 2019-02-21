@@ -7,18 +7,25 @@ use LeoCavalcante\Ippo\Ippo;
 
 class IppoTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        unlink(__DIR__.'/generated/TestUser.php');
+    }
+
     public function testGenerate()
     {
         $ippo = Ippo::fromYaml(__DIR__.'/fixture.yml');
         $definitions = $ippo->generate();
 
+        $this->assertFalse(file_exists(__DIR__.'/generated/TestUser.php'));
+
         foreach ($definitions as $definition) {
             file_put_contents(__DIR__."/generated/{$definition[0]}.php", $definition[1]);
         }
 
-        $this->assertFileExists(__DIR__."/generated/TestUser.php");
+        $this->assertFileExists(__DIR__.'/generated/TestUser.php');
 
-        require_once __DIR__."/generated/TestUser.php";
+        require_once __DIR__.'/generated/TestUser.php';
 
         $this->assertTrue(class_exists('\Acme\TestUser'));
 
