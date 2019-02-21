@@ -1,4 +1,4 @@
 @ECHO OFF
 setlocal DISABLEDELAYEDEXPANSION
-SET BIN_TARGET=%~dp0/../leocavalcante/ippo/ippo
+SET BIN_TARGET=%~dp0/../ippo
 php "%BIN_TARGET%" %*

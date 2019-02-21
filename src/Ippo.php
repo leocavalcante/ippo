@@ -17,7 +17,7 @@ class Ippo
     public function __construct(array $config)
     {
         $this->config = $config;
-        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__));
+        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__.'/res'));
 
         $this->twig->addFilter(new \Twig_Filter('ucfirst', 'ucfirst'));
 
@@ -46,7 +46,7 @@ class Ippo
                 return ['type' => $attr];
             }, $attributes);
 
-            $contents = $this->twig->render('ippo.twig', compact('className', 'extendsClassName', 'namespace', 'attributes'));
+            $contents = $this->twig->render('template.twig', compact('className', 'extendsClassName', 'namespace', 'attributes'));
 
             return [$className, $contents];
         }, $this->config['definitions']);

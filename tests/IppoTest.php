@@ -7,15 +7,14 @@ use LeoCavalcante\Ippo\Ippo;
 
 class IppoTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        unlink(__DIR__.'/generated/TestUser.php');
-    }
-
     public function testGenerate()
     {
         $ippo = Ippo::fromYaml(__DIR__.'/fixture.yml');
         $definitions = $ippo->generate();
+
+        if (file_exists(__DIR__.'/generated/TestUser.php')) {
+            unlink(__DIR__.'/generated/TestUser.php');
+        }
 
         $this->assertFalse(file_exists(__DIR__.'/generated/TestUser.php'));
 
@@ -24,7 +23,10 @@ class IppoTest extends TestCase
         }
 
         $this->assertFileExists(__DIR__.'/generated/TestUser.php');
+    }
 
+    public function testTestUser()
+    {
         require_once __DIR__.'/generated/TestUser.php';
 
         $this->assertTrue(class_exists('\Acme\TestUser'));
@@ -69,5 +71,19 @@ class IppoTest extends TestCase
 
         $userJson = json_encode($user);
         $this->assertStringStartsWith('{"id":1,"name":"username","is_admin":false,"birth_date":{"date":"', $userJson);
+    }
+
+    public function testFromArray()
+    {
+        $user = \Acme\TestUser::fromArray([
+            'name' => 'from_array',
+            'id' => 1,
+            'foo' => 'bar',
+        ]);
+
+        $this->assertSame(1, $user->getId());
+        $this->assertSame('from_array', $user->getName());
+        $this->assertFalse($user->getIsAdmin());
+        $this->assertNull($user->getBirthDate());
     }
 }

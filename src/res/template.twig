@@ -4,6 +4,15 @@ namespace {{namespace}};
 
 class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endif %} implements \JsonSerializable
 {
+    static public function fromArray(array $source): {{className}}
+    {
+        return new {{className}}(
+{% for attrName, attr in attributes %}
+            $source['{{attrName|snake_case}}'] ?? {% if attr.default is not empty %}{{attr.default}}{% else %}null{% endif  %},
+{% endfor %}
+        );
+    }
+
 {% for attrName, attr in attributes %}
     private ${{attrName}};
 {% endfor %}
@@ -50,6 +59,15 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
         ];
     }
 
+    public function toString(): string
+    {
+{% for attrName, attr in attributes %}
+        ${{attrName}} = json_encode($this->{{attrName}});
+{% endfor %}
+
+        return "{{className}}(\n{% for attrName, attr in attributes %}\t{{attrName}} => {${{attrName}}};\n{% endfor %})";
+    }
+
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -63,14 +81,5 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
 
 {% endfor %}
         );
-    }
-
-    public function toString()
-    {
-{% for attrName, attr in attributes %}
-        ${{attrName}} = json_encode($this->{{attrName}});
-{% endfor %}
-
-        return "{{className}}(\n{% for attrName, attr in attributes %}\t{{attrName}} => {${{attrName}}};\n{% endfor %})";
     }
 }

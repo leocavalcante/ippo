@@ -4,6 +4,17 @@ namespace App;
 
 class User implements \JsonSerializable
 {
+    static public function fromArray(array $source): User
+    {
+        return new User(
+            $source['id'] ?? null,
+            $source['name'] ?? null,
+            $source['email'] ?? null,
+            $source['is_admin'] ?? false,
+            $source['birth_date'] ?? null,
+        );
+    }
+
     private $id;
     private $name;
     private $email;
@@ -115,6 +126,17 @@ class User implements \JsonSerializable
         ];
     }
 
+    public function toString(): string
+    {
+        $id = json_encode($this->id);
+        $name = json_encode($this->name);
+        $email = json_encode($this->email);
+        $isAdmin = json_encode($this->isAdmin);
+        $birthDate = json_encode($this->birthDate);
+
+        return "User(\n\tid => {$id};\n\tname => {$name};\n\temail => {$email};\n\tisAdmin => {$isAdmin};\n\tbirthDate => {$birthDate};\n)";
+    }
+
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -129,16 +151,5 @@ class User implements \JsonSerializable
             $this->isAdmin,
             $this->birthDate
         );
-    }
-
-    public function __toString()
-    {
-        $id = json_encode($this->id);
-        $name = json_encode($this->name);
-        $email = json_encode($this->email);
-        $isAdmin = json_encode($this->isAdmin);
-        $birthDate = json_encode($this->birthDate);
-
-        return "User(\n\tid => {$id};\n\tname => {$name};\n\temail => {$email};\n\tisAdmin => {$isAdmin};\n\tbirthDate => {$birthDate};\n)";
     }
 }
