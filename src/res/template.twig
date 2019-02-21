@@ -13,6 +13,21 @@ class {{className}}{% if extendsClassName %} extends {{extendsClassName}}{% endi
         );
     }
 
+    static public function fromJson(string $json): {{className}}
+    {
+        $source = json_decode($json, true);
+
+        if (false === $source) {
+            throw new \InvalidArgumentException('JSON decode error: '.json_last_error_msg());
+        }
+
+        if (!is_array($source)) {
+            throw new \InvalidArgumentException('Your JSON didnt decoded to an array');
+        }
+
+        return {{className}}::fromArray($source);
+    }
+
 {% for attrName, attr in attributes %}
     private ${{attrName}};
 {% endfor %}

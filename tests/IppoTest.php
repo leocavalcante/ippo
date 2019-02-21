@@ -86,4 +86,26 @@ class IppoTest extends TestCase
         $this->assertFalse($user->getIsAdmin());
         $this->assertNull($user->getBirthDate());
     }
+
+    public function testFromJson()
+    {
+        $user = \Acme\TestUser::fromJson('{"id": 1, "name": "from_json", "foo": "bar"}');
+
+        $this->assertSame(1, $user->getId());
+        $this->assertSame('from_json', $user->getName());
+        $this->assertFalse($user->getIsAdmin());
+        $this->assertNull($user->getBirthDate());
+    }
+
+    public function testFromJsonInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        \Acme\TestUser::fromJson('not a json');
+    }
+
+    public function testFromJsonNotArray()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        \Acme\TestUser::fromJson('"valid json, but not an array"');
+    }
 }
