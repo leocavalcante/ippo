@@ -90,9 +90,9 @@ public function toArray(): array
 }
 ```
 
-Or `__toString()`:
+Or `toString()`:
 ```php
-public function __toString()
+public function toString()
 {
     $id = json_encode($this->id);
     $name = json_encode($this->name);
@@ -104,4 +104,33 @@ public function __toString()
 }
 ```
 
-### [Check out the complete output here](https://github.com/leocavalcante/ippo/blob/master/example/User.php)
+Con·ven·ient factory methods like `fromArray` and `fromJson`:
+```php
+static public function fromArray(array $source): User
+{
+    return new User(
+        $source['id'] ?? null,
+        $source['name'] ?? null,
+        $source['email'] ?? null,
+        $source['is_admin'] ?? false,
+        $source['birth_date'] ?? null,
+    );
+}
+
+static public function fromJson(string $json): User
+{
+    $source = json_decode($json, true);
+
+    if (false === $source) {
+        throw new \InvalidArgumentException('JSON decode error: '.json_last_error_msg());
+    }
+
+    if (!is_array($source)) {
+        throw new \InvalidArgumentException('Your JSON didnt decoded to an array');
+    }
+
+    return User::fromArray($source);
+}
+```
+
+#### [Check out the complete output here](https://github.com/leocavalcante/ippo/blob/master/example/User.php)
